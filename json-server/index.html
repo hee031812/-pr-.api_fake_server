@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="getData()">조회</button>
+    <button onclick="postData()">생성</button>
+    <button onclick="putData()">수정</button>
+    <button onclick="deleteData()">삭제</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody id="tbbody">
+            <tr>
+            </tr>
+
+        </tbody>
+    </table>
+    <script>
+        function getData() {
+            fetch("http://localhost:3000/customer")
+                .then((response) => response.json())
+                .then((json) => {
+                    const h = [];
+                    for (const customer of json) {
+                        h.push(`<tr>`);
+                        h.push(`<td>${customer.name}</td>`);
+                        h.push(`<td>${customer.company}</td>`);
+                        h.push(`<td>${customer.email}</td>`);
+                        h.push(`<td>${customer.address}</td>`);
+                        h.push(`</tr>`);
+
+                    }
+                    document.getElementById("tbbody").innerHTML = h.join("")
+                })
+        }
+
+
+        function postData() {
+            const customer = {
+                "name": "john",
+                "company": "GEEKOSIS",
+                "email": "john@geekosis.com",
+                "phone": "+1 (948) 583-2544",
+                "address": "jeju",
+            };
+            fetch("http://localhost:3000/customer", {
+                method: "POST",
+                body: JSON.stringify(customer),
+                header: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+            }).then(response => response.json())
+                .then((json) => console.log(json))
+        }
+
+        function putData() {
+            const customer = {
+                "name": "JANE",
+                "company": "GEEKOSIS",
+                "email": "JANE@geekosis.com",
+                "phone": "+1 (948) 1111-1111",
+                "address": "jeju",
+            };
+            fetch("http://localhost:3000/customer/c2d1", {
+                method: "PUT",
+                body: JSON.stringify(customer),
+                header: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+            }).then(response => response.json())
+                .then((json) => console.log(json))
+        }
+
+        function deleteData() {
+            const customer = {
+                "name": "JANE",
+                "company": "GEEKOSIS",
+                "email": "JANE@geekosis.com",
+                "phone": "+1 (948) 1111-1111",
+                "address": "jeju",
+            };
+            fetch("http://localhost:3000/customer/c2d1", {
+                method: "DELETE",
+            }).then(response => response.json())
+                .then((json) => console.log(json))
+        }
+
+
+    </script>
+
+</body>
+
+</html>
